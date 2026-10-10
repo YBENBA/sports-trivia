@@ -576,6 +576,7 @@ const STRINGS = {
     rankGuideBody: 'Sports IQ is a game rating, not a scientific IQ score. Like a real IQ, 100 is the starting point and the average. Correct answers to questions rated above your level move it more; misses on easier questions cost more. Very fast correct answers add only a small bonus (tiny). During your first 60 answers it moves faster, to find your level; after that it settles.',
     alienRule: 'Alien {iq}+ with at least 150 answers and 82% lifetime accuracy',
     footer: 'V{v} • Offline single-file build • Data stays on this device',
+    footerWeb: 'V{v} • Web app that also works offline • Data stays on this device',
     backupTitle: 'Your data: back up, move, reset',
     backupBody: 'Stats are stored only in this browser. Save a backup file to keep them safe or to move them to another device. Loading a backup replaces every profile on this device.',
     exportBtn: 'Save backup file', importBtn: 'Load backup file',
@@ -649,6 +650,7 @@ const STRINGS = {
     rankGuideBody: 'Sports IQ הוא דירוג משחק ולא ציון IQ מדעי. כמו ב-IQ אמיתי, 100 הוא נקודת ההתחלה והממוצע. תשובה נכונה לשאלה שמדורגת מעל הרמה שלך מזיזה את הדירוג יותר; טעות בשאלה קלה יותר עולה יותר. תשובה נכונה מהירה מאוד מוסיפה בונוס קטן מאוד. ב-60 התשובות הראשונות הדירוג זז מהר יותר כדי למצוא את הרמה שלך, ואחר כך הוא מתייצב.',
     alienRule: 'חייזר: {iq}+ עם 150 תשובות לפחות ו-82% דיוק מצטבר',
     footer: 'גרסה {v} • קובץ יחיד שעובד גם בלי אינטרנט • הנתונים נשמרים במכשיר בלבד',
+    footerWeb: 'גרסה {v} • אפליקציית רשת שעובדת גם בלי אינטרנט • הנתונים נשמרים במכשיר בלבד',
     backupTitle: 'הנתונים שלך: גיבוי, העברה ואיפוס',
     backupBody: 'הנתונים נשמרים רק בדפדפן הזה. שמרו קובץ גיבוי כדי לא לאבד אותם או כדי להעביר אותם למכשיר אחר. טעינת גיבוי מחליפה את כל הפרופילים במכשיר.',
     exportBtn: 'שמירת קובץ גיבוי', importBtn: 'טעינת קובץ גיבוי',
@@ -972,7 +974,7 @@ function renderHome() {
     <details class="rank-guide participants"><summary>${esc(t('participantsTitle'))}</summary><p class="subtle">${esc(t('participantsBody'))}</p>
       <div class="participant-list">${profiles.map(([id, p]) => `<button class="profilechip ${STORE.participants.includes(id) ? 'active' : ''}" data-participant="${esc(id)}" aria-pressed="${STORE.participants.includes(id)}">${esc(pname(p))}</button>`).join('')}</div>
     </details>
-    <p class="footer-note">${esc(t('footer', { v: APP_VERSION }))}</p>
+    <p class="footer-note">${esc(t(PWA.served ? 'footerWeb' : 'footer', { v: APP_VERSION }))}</p>
   </div></main>`;
   app.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => setLang(b.dataset.lang));
   app.querySelectorAll('[data-profile]').forEach(b => b.onclick = () => { STORE.activeId = b.dataset.profile; P = STORE.profiles[STORE.activeId]; save(); render(); });
