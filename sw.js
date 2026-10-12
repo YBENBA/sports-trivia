@@ -7,12 +7,16 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   const req = e.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+  const url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== self.location.origin) return;
+  // Only the game page itself maps to the cached index.html; other pages on the site (e.g. the iPhone checklist) load normally.
+  const isApp = req.mode === 'navigate' && /\/(index\.html)?$/.test(url.pathname);
+  if (req.mode === 'navigate' && !isApp) return;
   // Cache first (instant + offline); the page itself is refreshed in the background for the next visit.
   e.respondWith(caches.open(CACHE).then(async c => {
-    const key = req.mode === 'navigate' ? 'index.html' : req;
+    const key = isApp ? 'index.html' : req;
     const hit = await c.match(key, { ignoreSearch: true });
-    const net = fetch(req).then(r => { if (r.ok && req.mode === 'navigate') c.put('index.html', r.clone()); return r; }).catch(() => null);
+    const net = fetch(req).then(r => { if (r.ok && isApp) c.put('index.html', r.clone()); return r; }).catch(() => null);
     return hit || (await net) || Response.error();
   }));
 });
