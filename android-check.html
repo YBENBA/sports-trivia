@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>בדיקת אנדרואיד לזירת הטריוויה</title>
+</head>
+<body>
+<style>
+/* Layout: one narrow RTL column like a phone scorecard; item number on the right, pass/fail buttons on the left. */
+:root{
+  --bg:#f3f6f4; --surface:#ffffff; --fg:#14201a; --muted:#5b6b62; --line:#d9e2dc;
+  --accent:#0f9d63; --accent-ink:#ffffff; --ok:#0f9d63; --ok-bg:#e3f5ec; --bad:#c8364b; --bad-bg:#fbe7ea;
+  --display:-apple-system,"Segoe UI",Rubik,Arial,sans-serif; --body:-apple-system,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b0f0d; --surface:#131a16; --fg:#eef4f0; --muted:#97a69d; --line:#26322b;
+  --accent:#24d38a; --accent-ink:#06130c; --ok:#24d38a; --ok-bg:#12291e; --bad:#ff6b80; --bad-bg:#2c1419; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b0f0d; --surface:#131a16; --fg:#eef4f0; --muted:#97a69d; --line:#26322b;
+  --accent:#24d38a; --accent-ink:#06130c; --ok:#24d38a; --ok-bg:#12291e; --bad:#ff6b80; --bad-bg:#2c1419; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:28px 120px}
+header h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,6vw,34px);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 14px}
+.link{display:inline-flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-weight:700;color:var(--accent);text-decoration:none;direction:ltr;word-break:break-all}
+.how{margin:18px 0 0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:15px}
+.how b{color:var(--fg)}
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--bg);padding-block:12px;margin-top:18px;border-bottom:1px solid var(--line)}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.progress p{margin:6px 0 0;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+section{margin-top:30px}
+section h2{font-family:var(--display);font-weight:700;font-size:20px;margin:0 0 4px;display:flex;gap:10px;align-items:baseline}
+section h2 .letter{color:var(--accent)}
+.tag{font-family:var(--body);font-size:12px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:1px 8px}
+.note-top{color:var(--muted);font-size:14px;margin:0 0 6px}
+ol{list-style:none;margin:0;padding:0}
+li.item{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:4px 10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.num{font-family:var(--display);font-weight:800;font-size:18px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;padding-top:1px}
+li.ok .num{color:var(--ok)} li.bad .num{color:var(--bad)}
+.body{min-width:0}
+.task{margin:0;font-weight:500}
+.checks{margin:6px 0 0;padding:0;padding-inline-start:18px;color:var(--muted);font-size:15px}
+.checks li{list-style:disc;margin:2px 0}
+.record{display:inline-block;margin-top:6px;font-size:14px;font-weight:700;color:var(--fg);background:var(--ok-bg);border-radius:6px;padding:2px 8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.res{font:inherit;font-weight:700;font-size:15px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;padding:8px 14px;min-height:44px;cursor:pointer}
+.res[aria-pressed="true"].y{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.res[aria-pressed="true"].n{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+textarea,input{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{min-height:44px;resize:vertical;margin-top:8px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.callout{margin:22px 0 0;padding:12px 16px;border-inline-start:4px solid var(--accent);background:var(--surface);border-radius:8px;font-weight:700}
+.send{margin-top:34px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.send h2{font-family:var(--display);font-size:20px;margin:0 0 10px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fields label{font-size:14px;color:var(--muted);display:grid;gap:4px}
+@media (max-width:460px){.fields{grid-template-columns:1fr}}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{font:inherit;font-weight:700;border-radius:12px;padding:12px 18px;min-height:48px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.status{min-height:1.5em;margin:10px 0 0;color:var(--muted);font-size:14px}
+pre#out{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;margin-top:12px;max-height:260px;overflow:auto}
+.reset{background:none;border:0;color:var(--muted);text-decoration:underline;font:inherit;font-size:14px;cursor:pointer;margin-top:18px;padding:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap" dir="rtl" lang="he">
+  <header>
+    <h1>בדיקת אנדרואיד לזירת הטריוויה</h1>
+    <p class="lead">בערך 10 דקות. צריך טלפון אנדרואיד עם Chrome וחיבור לאינטרנט.</p>
+    <a class="link" href="https://ybenba.github.io/sports-trivia/" target="_blank" rel="noopener">ybenba.github.io/sports-trivia</a>
+    <p class="how">ליד כל סעיף לוחצים <b>✅ עבד</b> או <b>❌ לא עבד</b>, ואם צריך, כותבים מה ראיתם. התשובות נשמרות בטלפון הזה, אז אפשר לעצור ולחזור. בסוף לוחצים <b>שליחה בוואטסאפ</b>. אם משהו נראה שבור, מצלמים מסך ושולחים בנפרד.</p>
+  </header>
+
+  <div class="progress" aria-live="polite"><div class="bar"><i id="barFill"></i></div><p id="progText">0 מתוך 16 סעיפים</p></div>
+
+  <main id="list"></main>
+
+  <section class="send" aria-labelledby="sendTitle">
+    <h2 id="sendTitle">שליחת התוצאות</h2>
+    <div class="fields">
+      <label for="model">דגם הטלפון<input id="model" placeholder="למשל גלקסי S24"></label>
+      <label for="ios">גרסת אנדרואיד (הגדרות ← אודות הטלפון)<input id="ios" placeholder="למשל 15"></label>
+    </div>
+    <div class="actions">
+      <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener">שליחה בוואטסאפ</a>
+      <button class="btn" id="copy" type="button">העתקת הסיכום</button>
+    </div>
+    <p class="status" id="status"></p>
+    <pre id="out"></pre>
+    <button class="reset" id="reset" type="button">ניקוי כל התשובות</button>
+  </section>
+</div>
+
+<script>
+const SECTIONS = [
+  { letter: 'א', title: 'התקנה', items: [
+    { t: 'פותחים את הקישור ב-Chrome. אם הקישור נפתח בתוך וואטסאפ, לוחצים על ⋮ ובוחרים "פתח ב-Chrome".', c: ['מופיע במסך הבית של המשחק כרטיס עם כפתור התקנה? (אם לא, אפשר דרך ⋮ ← "הוספה למסך הבית" או "התקנת אפליקציה")'] },
+    { t: 'מתקינים את המשחק.', c: ['מופיע אייקון של המשחק במסך הבית של הטלפון?'] },
+    { t: 'פותחים את המשחק מהאייקון.', c: ['הוא נפתח במסך מלא, בלי שורת הכתובת של Chrome?', 'שום כפתור לא מוסתר מתחת לשורת השעה או לפס הניווט התחתון?'] }
+  ], after: 'מכאן והלאה ממשיכים מתוך האייקון.' },
+  { letter: 'ב', title: 'כפתור חזרה של הטלפון', key: true, items: [
+    { t: 'מתחילים משחק מהיר, ובאמצע שאלה לוחצים על כפתור "חזרה" של הטלפון (או מחליקים מהצד).', c: [], rec: 'לרשום: מה קרה? יצא מהמשחק לגמרי, חזר למסך הבית של המשחק, או לא קרה כלום?' },
+    { t: 'מסיימים משחק, ובמסך התוצאות לוחצים "חזרה" של הטלפון.', c: [], rec: 'לרשום: מה קרה?' }
+  ] },
+  { letter: 'ג', title: 'רמת קושי ושמירת נתונים', items: [
+    { t: 'בפעם הראשונה ש"משחק מהיר" נלחץ:', c: ['מופיע המסך "באיזו רמת קושי תרצו לשחק?" עם שלוש רמות?'] },
+    { t: 'בוחרים "נערים ג׳" ומשחקים עד הסוף. חוזרים למסך הבית של המשחק.', c: ['"משחקים" מראה 1, וכתוב "רמת קושי: נערים ג׳"?'] },
+    { t: 'סוגרים את המשחק לגמרי (מסך האפליקציות האחרונות ← מחליקים אותו החוצה) ופותחים שוב מהאייקון.', c: ['הנתונים עדיין שם?'] },
+    { t: 'למחרת פותחים שוב.', c: ['הנתונים עדיין שם?'] }
+  ] },
+  { letter: 'ד', title: 'המשחק עצמו', items: [
+    { t: 'עוברים על המסכים בעברית.', c: ['הטקסט מימין לשמאל, ואין מילים באנגלית חוץ מ-Sports IQ, NBA, NFL ו-MVP?'] },
+    { t: 'מגיעים לשאלה פתוחה (שבה מקלידים תשובה).', c: ['המקלדת לא מסתירה את השאלה ואת כפתור האישור?', 'תשובה בעברית מתקבלת?'] }
+  ] },
+  { letter: 'ה', title: 'שיתוף ואתגר חבר', items: [
+    { t: 'במסך הבית לוחצים "לאתגר חבר", משחקים 10 שאלות ולוחצים "שיתוף בוואטסאפ".', c: ['נפתח וואטסאפ עם הודעה, ריבועים צבעוניים 🟩🟥 וקישור?'] },
+    { t: 'לוחצים בעצמכם על הקישור שנשלח (או חבר לוחץ עליו).', c: ['נפתח המשחק עם הכרטיס "חבר אתגר אתכם"?'], rec: 'לרשום: נפתח בתוך וואטסאפ, ב-Chrome או באפליקציה המותקנת?' }
+  ] },
+  { letter: 'ו', title: 'צליל ומצב טיסה', items: [
+    { t: 'בראש מסך הבית מפעילים "צליל" ועונים על שאלה (עוצמת המדיה לא על אפס).', c: ['נשמע צליל?'] },
+    { t: 'מעבירים את הטלפון למצב טיסה ופותחים את המשחק מהאייקון.', c: ['המשחק נפתח ואפשר לשחק בו?'] }
+  ] },
+  { letter: 'ז', title: 'דפדפן של סמסונג', need: 'רק אם הטלפון של סמסונג', items: [
+    { t: 'פותחים את הקישור לאתר גם בדפדפן "Samsung Internet" ומשחקים שאלה או שתיים.', c: ['הכול נראה ועובד כמו ב-Chrome?'] }
+  ] }
+];
+const KEY = 'androidChecklist.v56';
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage blocked: answers stay for this visit */ } };
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+
+let n = 0;
+const ALL = [];
+document.getElementById('list').innerHTML = SECTIONS.map(sec => {
+  const items = sec.items.map(it => {
+    n++; ALL.push({ n, sec, it });
+    return `<li class="item" id="item${n}" data-n="${n}">
+      <span class="num">${n}</span>
+      <div class="body">
+        <p class="task">${esc(it.t)}</p>
+        ${it.c.length ? `<ul class="checks">${it.c.map(c => `<li>${esc(c)}</li>`).join('')}</ul>` : ''}
+        ${it.rec ? `<span class="record">${esc(it.rec)}</span>` : ''}
+        <div class="row" role="group" aria-label="תוצאה לסעיף ${n}">
+          <button type="button" class="res y" data-n="${n}" data-v="ok" aria-pressed="false">✅ עבד</button>
+          <button type="button" class="res n" data-n="${n}" data-v="bad" aria-pressed="false">❌ לא עבד</button>
+        </div>
+        <textarea id="note${n}" data-n="${n}" rows="1" placeholder="מה ראיתם? (לא חובה)" aria-label="הערה לסעיף ${n}"></textarea>
+      </div>
+    </li>`;
+  }).join('');
+  return `<section aria-labelledby="h${sec.letter}">
+    <h2 id="h${sec.letter}"><span class="letter">${sec.letter}.</span> ${esc(sec.title)} ${sec.isNew ? '<span class="tag">חדש</span>' : ''} ${sec.key ? '<span class="tag">הכי חשוב</span>' : ''}</h2>
+    ${sec.need ? `<p class="note-top">${esc(sec.need)}</p>` : ''}
+    <ol>${items}</ol>
+    ${sec.after ? `<p class="callout">${esc(sec.after)}</p>` : ''}
+  </section>`;
+}).join('');
+const TOTAL = n;
+
+function paint() {
+  let done = 0;
+  ALL.forEach(({ n }) => {
+    const s = state[n] || {};
+    const li = document.getElementById('item' + n);
+    li.classList.toggle('ok', s.v === 'ok'); li.classList.toggle('bad', s.v === 'bad');
+    li.querySelectorAll('.res').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === s.v)));
+    const ta = document.getElementById('note' + n);
+    if (document.activeElement !== ta) ta.value = s.note || '';
+    if (s.v) done++;
+  });
+  document.getElementById('barFill').style.width = (done / TOTAL * 100) + '%';
+  document.getElementById('progText').textContent = `${done} מתוך ${TOTAL} סעיפים`;
+  const text = summary();
+  document.getElementById('out').textContent = text;
+  document.getElementById('wa').href = 'https://wa.me/?text=' + encodeURIComponent(text);
+}
+function summary() {
+  const lines = ['בדיקת אנדרואיד – זירת טריוויית הספורט V5.6'];
+  const m = (state.model || '').trim(), v = (state.ios || '').trim();
+  lines.push(`מכשיר: ${m || 'לא צוין'} • אנדרואיד ${v || 'לא צוין'}`);
+  let lastSec = null;
+  ALL.forEach(({ n, sec }) => {
+    if (sec !== lastSec) { lines.push('', `${sec.letter}. ${sec.title}`); lastSec = sec; }
+    const s = state[n] || {};
+    const mark = s.v === 'ok' ? '✅' : s.v === 'bad' ? '❌' : '⬜';
+    lines.push(`${n}. ${mark}${s.note ? ' – ' + s.note.trim() : ''}`);
+  });
+  return lines.join('\n');
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.res');
+  if (!b) return;
+  const k = b.dataset.n, s = state[k] = state[k] || {};
+  s.v = s.v === b.dataset.v ? undefined : b.dataset.v;
+  save(); paint();
+});
+document.addEventListener('input', e => {
+  if (e.target.matches('textarea[data-n]')) { const k = e.target.dataset.n; (state[k] = state[k] || {}).note = e.target.value; }
+  else if (e.target.id === 'model' || e.target.id === 'ios') state[e.target.id] = e.target.value;
+  else return;
+  save(); paint();
+});
+document.getElementById('model').value = state.model || '';
+document.getElementById('ios').value = state.ios || '';
+const status = document.getElementById('status');
+document.getElementById('copy').addEventListener('click', async () => {
+  const text = summary();
+  try { await navigator.clipboard.writeText(text); status.textContent = 'הסיכום הועתק. אפשר להדביק אותו בוואטסאפ.'; }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents(document.getElementById('out'));
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    status.textContent = 'ההעתקה האוטומטית לא עבדה. הסיכום מסומן למטה, אפשר להעתיק אותו ידנית.';
+  }
+});
+let armed = false;
+document.getElementById('reset').addEventListener('click', e => {
+  if (!armed) { armed = true; e.target.textContent = 'בטוח? לחיצה נוספת תמחק את כל התשובות'; setTimeout(() => { armed = false; e.target.textContent = 'ניקוי כל התשובות'; }, 4000); return; }
+  state = {}; save(); document.getElementById('model').value = ''; document.getElementById('ios').value = '';
+  armed = false; e.target.textContent = 'ניקוי כל התשובות'; status.textContent = 'כל התשובות נמחקו.'; paint();
+});
+paint();
+</script>
+</body>
+</html>
