@@ -1286,6 +1286,9 @@ function loadQuestion(replaceCurrent) {
   S.status = 'ACTIVE';
   S.screen = 'game';
   renderGame();
+  // Each question starts at the top: on phones the feedback scrolls down smoothly, and that scroll must not carry over
+  // (it hid the Home button). 'instant' also cancels a smooth scroll still in progress.
+  window.scrollTo({ top: 0, behavior: 'instant' });
   startTimer();
 }
 
