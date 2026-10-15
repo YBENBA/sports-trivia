@@ -1,5 +1,5 @@
 // Service worker: the whole game is cached on first visit and works offline afterwards.
-const CACHE = 'sta-6.0-7d6ac2c3ba';
+const CACHE = 'sta-6.1-18a2d36575';
 const ASSETS = ["./","index.html","manifest.webmanifest","icon-192.png","icon-512.png","icon-maskable-512.png","apple-touch-icon.png"];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {
