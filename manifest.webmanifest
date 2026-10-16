@@ -1,6 +1,6 @@
 {
- "name": "Sports Trivia Arena – זירת טריוויית הספורט",
- "short_name": "Trivia Arena",
+ "name": "Sports Junkie – חולה בספורט",
+ "short_name": "Sports Junkie",
  "id": "./",
  "start_url": "./",
  "scope": "./",
@@ -8,7 +8,7 @@
  "orientation": "portrait",
  "background_color": "#07090d",
  "theme_color": "#07090d",
- "description": "Sports trivia for serious fans – Hebrew & English. טריוויית ספורט לאוהדים רציניים.",
+ "description": "Sports trivia for serious fans – Hebrew & English. טריוויה לחולי ספורט.",
  "icons": [
   {
    "src": "icon-192.png",
