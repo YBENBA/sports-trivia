@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="icon-192.png">
+<title>Sports Junkie – עיצוב חדש, מה דעתכם?</title>
+<style>
+/* Proposal page for friends: the new look (turquoise + purple, the two fans) next to today's look, plus a short WhatsApp survey. */
+@font-face{font-family:Rubik;font-weight:500;src:url(dp-rubik-hebrew-500.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Rubik;font-weight:800 900;src:url(dp-rubik-hebrew-800.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Rubik;font-weight:500;src:url(dp-rubik-latin-500.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Rubik;font-weight:800 900;src:url(dp-rubik-latin-800.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{--turq:#2ec4b6;--ink:#111;--paper:#fff;--win:#2e9e5b;--lose:#d7263d;--purple:#6b3fd4;--purple-soft:#efe8ff;
+  --font:"Rubik","Segoe UI",Arial,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--turq);color:var(--ink);font-family:var(--font);font-weight:500}
+.page{max-width:1000px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:30px}
+h1{margin:0;font-size:clamp(24px,6vw,32px);font-weight:900;text-wrap:balance}
+h2{margin:0 0 12px;font-size:20px;font-weight:800}
+.lead{margin:6px 0 0;font-size:16px;line-height:1.6;max-width:62ch}
+.label{display:inline-block;justify-self:start;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:3px 12px;font-size:13px}
+
+.logo{container-type:inline-size;width:min(400px,100%);margin:0 auto;background:var(--purple);border:4px solid var(--ink);border-radius:26px;padding:12px 12px 0;box-shadow:0 7px 0 var(--ink);overflow:hidden}
+.logo .title{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;color:#fff}
+.logo .en{text-align:center;font-weight:900;font-size:clamp(16px,calc(13cqw - 14px),40px);line-height:1;direction:ltr;white-space:nowrap;letter-spacing:-.5px}
+.tile{width:36px;height:36px;border:3px solid var(--ink);border-radius:10px;display:grid;place-items:center;font-size:21px;font-weight:900;color:#fff}
+.tile.v{background:var(--win)}.tile.x{background:var(--lose)}
+.logo .pic{margin:10px -12px 0;aspect-ratio:720/875;background:url(dp-fans.jpg) center bottom/100% auto no-repeat;border-top:4px solid var(--ink)}
+
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;align-items:start}
+.col{display:grid;gap:10px;justify-items:center}
+.today{width:100%;max-width:300px;border:3px solid var(--ink);border-radius:24px;overflow:hidden;background:#07090d}
+.today img{display:block;width:100%;height:auto}
+
+.phones{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.phone{background:var(--turq);border:3px solid var(--ink);border-radius:28px;padding:14px;display:grid;gap:10px;align-content:start;min-width:0;box-shadow:0 8px 0 #1a7f76;width:100%;max-width:340px;justify-self:center}
+.phone .logo{width:100%;padding:8px 8px 0;border-width:3px;box-shadow:0 5px 0 var(--ink)}
+.phone .logo .tile{width:28px;height:28px;font-size:16px}
+.phone .logo .pic{margin:8px -8px 0;border-top-width:3px}
+.btn{background:var(--paper);border:3px solid var(--ink);border-radius:14px;padding:11px;text-align:center;font-weight:800;font-size:15px}
+.btn.main{background:var(--purple);color:#fff}
+.q{background:var(--purple);color:#fff;border:3px solid var(--ink);border-radius:16px;padding:10px 12px;font-weight:800;font-size:15px;line-height:1.35}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.pill{background:var(--purple-soft);border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800}
+.opt{background:var(--paper);border:2.5px solid var(--ink);border-radius:12px;padding:8px 10px;font-size:14px}
+.opt.ok{background:#bff0cf}.opt.bad{background:#ffc4c4}
+.scene{position:relative;aspect-ratio:1/1;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background-size:cover;background-position:center}
+.bubble{position:absolute;bottom:10px;inset-inline:10px;background:var(--paper);border:3px solid var(--purple);outline:2px solid var(--ink);border-radius:16px;padding:8px 10px;font-weight:800;font-size:15px;line-height:1.3;text-align:center}
+.info{background:var(--purple-soft);border:2px dashed var(--purple);border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.5}
+.big{font-size:40px;font-weight:900;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.win-in{animation:winIn .9s cubic-bezier(.2,1.5,.4,1) both}
+.lose-in{animation:loseIn 1s ease-out both}
+@keyframes winIn{0%{transform:translateY(40px) scale(.7);opacity:0}55%{transform:translateY(-12px) scale(1.04);opacity:1}75%{transform:translateY(4px) scale(.99)}100%{transform:none}}
+@keyframes loseIn{0%{transform:translateY(-14px);opacity:0}40%{transform:translateY(8px);opacity:1}55%{transform:translateX(-7px) translateY(8px)}65%{transform:translateX(7px) translateY(8px)}75%{transform:translateX(-4px) translateY(6px)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.win-in,.lose-in{animation:none}}
+
+.survey{background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:18px;display:grid;gap:16px;box-shadow:0 6px 0 var(--ink)}
+.survey fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}
+.survey legend{font-weight:800;font-size:16px;margin-bottom:6px}
+.choices{display:flex;gap:8px;flex-wrap:wrap}
+.choice{font:inherit;font-weight:800;font-size:15px;border:2.5px solid var(--ink);background:var(--paper);border-radius:12px;padding:9px 14px;min-height:44px;cursor:pointer}
+.choice[aria-pressed="true"]{background:var(--purple);color:#fff}
+.choice:focus-visible,.send:focus-visible,textarea:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+textarea{font:inherit;width:100%;min-height:80px;border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px;resize:vertical}
+.send{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:var(--ink);font-weight:900;font-size:17px;border:3px solid var(--ink);border-radius:14px;padding:12px 18px;text-decoration:none;min-height:50px}
+.small{font-size:13px;line-height:1.5;color:#1f4542}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>עיצוב חדש לטריוויה. מה דעתכם?</h1>
+    <p class="lead">אנחנו שוקלים לשנות את המראה של המשחק לכיוון הומוריסטי יותר: רקע טורקיז, סגול, ושני אוהדים (אחד ווינר ואחד לוזר) שמגיבים לכל תשובה. זו רק הדמיה. המשחק עצמו עוד לא השתנה. גללו למטה, ובסוף ענו על שלוש שאלות קצרות.</p>
+  </header>
+
+  <section>
+    <h2>הלוגו החדש</h2>
+    <div class="logo" role="img" aria-label="לוגו Sports Junkie: שני אוהדים במושבי האצטדיון, אחד קופץ משמחה והשני מתייאש">
+      <div class="title"><span class="tile x">✗</span><div class="en">Sports Junkie</div><span class="tile v">✓</span></div>
+      <div class="pic"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>היום מול ההצעה</h2>
+    <div class="compare">
+      <div class="col"><span class="label">היום</span><div class="today"><img src="dp-today-home.jpg" alt="מסך הבית של המשחק היום: רקע כהה וכותרת גדולה" loading="lazy"></div></div>
+      <div class="col"><span class="label">ההצעה</span>
+        <div class="phone">
+          <div class="logo"><div class="title"><span class="tile x">✗</span><div class="en">Sports Junkie</div><span class="tile v">✓</span></div><div class="pic"></div></div>
+          <div class="btn main">לאתגר חבר 🤝</div>
+          <div class="btn">אתגר יומי #7 📅</div>
+          <div class="btn">בחירת מצב משחק</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>ככה זה ייראה באמצע משחק</h2>
+    <div class="phones">
+      <div class="phone">
+        <span class="label">תשובה נכונה, שאלה קלה</span>
+        <div class="meta"><span class="pill">⚽ כדורגל</span><span class="pill">קל</span></div>
+        <div class="q">באיזו עיר משחקת ריאל מדריד?</div>
+        <div class="opt ok">מדריד ✓</div>
+        <div class="scene win-in" style="background-image:url(dp-penalty.jpg)" role="img" aria-label="האוהד המאושר חוגג מול שער בלי שוער"><div class="bubble">נכון. אבל בואו, זה היה פנדל בלי שוער.</div></div>
+        <div class="info">בונוס: ריאל מדריד זכתה בליגת האלופות יותר מכל קבוצה אחרת.</div>
+      </div>
+      <div class="phone">
+        <span class="label">תשובה נכונה</span>
+        <div class="meta"><span class="pill">⚽ כדורגל</span><span class="pill">בינוני</span></div>
+        <div class="q">מי כבש את שער הניצחון בגמר מונדיאל 2010?</div>
+        <div class="opt ok">אנדרס אינייסטה ✓</div>
+        <div class="scene win-in" style="background-image:url(dp-crowd.jpg)" role="img" aria-label="האוהד המאושר נישא על כתפי הקהל"><div class="bubble">גול! הקהל על הרגליים.</div></div>
+        <div class="info">אינייסטה כבש בדקה ה־116, וספרד זכתה בתואר העולמי הראשון שלה.</div>
+      </div>
+      <div class="phone">
+        <span class="label">תשובה נכונה, עוד סצנה</span>
+        <div class="meta"><span class="pill">⚽ כדורגל</span><span class="pill">קל</span></div>
+        <div class="q">כמה שחקנים יש לכל קבוצה על המגרש בכדורגל?</div>
+        <div class="opt ok">11 ✓</div>
+        <div class="scene win-in" style="background-image:url(dp-boss.jpg)" role="img" aria-label="האוהד המאושר עומד עם רגל על הכדור"><div class="bubble">נכון. אתם שולטים במשחק.</div></div>
+      </div>
+      <div class="phone">
+        <span class="label">תשובה שגויה</span>
+        <div class="meta"><span class="pill">⚽ כדורגל</span><span class="pill">קל</span></div>
+        <div class="q">מי כבש את שער הניצחון בגמר מונדיאל 2010?</div>
+        <div class="opt bad">פרננדו טורס ✗</div>
+        <div class="scene lose-in" style="background-image:url(dp-opengoal.jpg)" role="img" aria-label="האוהד המתוסכל מחמיץ מול שער ריק"><div class="bubble">החמצתם מול שער ריק.</div></div>
+        <div class="info">התשובה: אנדרס אינייסטה, בדקה ה־116.</div>
+      </div>
+      <div class="phone">
+        <span class="label">סוף משחק טוב</span>
+        <div class="big">6,620</div>
+        <div class="scene win-in" style="background-image:url(dp-scarf.jpg)" role="img" aria-label="האוהד המאושר על הכיסא מסובב צעיף"><div class="bubble">כמעט אליפות. רק לא להתרסק במחזור האחרון.</div></div>
+        <div class="btn">עוד משחק</div>
+      </div>
+      <div class="col"><span class="label">ככה זה נראה היום, לשם השוואה</span><div class="today"><img src="dp-today-feedback.jpg" alt="מסך תשובה במשחק היום: רקע כהה, בלי דמויות" loading="lazy"></div></div>
+    </div>
+    <p class="small">בכל מצב יהיו כמה סצנות שונות שיתחלפו באקראי, כדי שלא תראו אותה תמונה כל הזמן. כשהתמונה מופיעה, הווינר קופץ פנימה והלוזר שוקע ונרעד.</p>
+  </section>
+
+  <section>
+    <h2>מה דעתכם? (חצי דקה)</h2>
+    <form class="survey" id="survey" novalidate>
+      <fieldset><legend>1. מה יותר עדיף לכם?</legend>
+        <div class="choices" data-q="1">
+          <button type="button" class="choice" data-v="העיצוב החדש">העיצוב החדש</button>
+          <button type="button" class="choice" data-v="העיצוב של היום">העיצוב של היום</button>
+          <button type="button" class="choice" data-v="לא משנה לי">לא משנה לי</button>
+        </div>
+      </fieldset>
+      <fieldset><legend>2. הדמויות והבועות המצחיקות:</legend>
+        <div class="choices" data-q="2">
+          <button type="button" class="choice" data-v="מצחיק, עוד">מצחיק, עוד 😂</button>
+          <button type="button" class="choice" data-v="בסדר">בסדר</button>
+          <button type="button" class="choice" data-v="מעצבן, בלי">מעצבן, בלי</button>
+        </div>
+      </fieldset>
+      <fieldset><legend>3. הלוגו החדש:</legend>
+        <div class="choices" data-q="3">
+          <button type="button" class="choice" data-v="אהבתי">אהבתי</button>
+          <button type="button" class="choice" data-v="ככה ככה">ככה ככה</button>
+          <button type="button" class="choice" data-v="לא אהבתי">לא אהבתי</button>
+        </div>
+      </fieldset>
+      <fieldset><legend><label for="free">משהו להוסיף? (לא חובה)</label></legend>
+        <textarea id="free" placeholder="למשל: הסגול חזק מדי, או שהלוזר הכי מצחיק"></textarea>
+      </fieldset>
+      <a class="send" id="send" href="https://wa.me/" target="_blank" rel="noopener">שליחת התשובות בוואטסאפ</a>
+      <p class="small" id="hint">הכפתור פותח את וואטסאפ עם התשובות שלכם. בוחרים את מי ששלח לכם את הקישור ושולחים.</p>
+    </form>
+  </section>
+
+</div>
+<script>
+const answers = {};
+document.querySelectorAll('.choices').forEach(group => group.addEventListener('click', e => {
+  const b = e.target.closest('.choice'); if (!b) return;
+  group.querySelectorAll('.choice').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  answers[group.dataset.q] = b.dataset.v; update();
+}));
+document.querySelectorAll('.choice').forEach(b => b.setAttribute('aria-pressed', 'false'));
+const free = document.getElementById('free');
+free.addEventListener('input', update);
+function update() {
+  const lines = ['Sports Junkie – מה דעתי על העיצוב החדש:',
+    '1. עדיף: ' + (answers[1] || 'לא עניתי'),
+    '2. הדמויות והבועות: ' + (answers[2] || 'לא עניתי'),
+    '3. הלוגו: ' + (answers[3] || 'לא עניתי')];
+  if (free.value.trim()) lines.push('הערות: ' + free.value.trim());
+  document.getElementById('send').href = 'https://wa.me/?text=' + encodeURIComponent(lines.join('\n'));
+}
+update();
+</script>
+</body>
+</html>
