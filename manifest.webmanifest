@@ -6,8 +6,8 @@
  "scope": "./",
  "display": "standalone",
  "orientation": "portrait",
- "background_color": "#07090d",
- "theme_color": "#07090d",
+ "background_color": "#2ec4b6",
+ "theme_color": "#2ec4b6",
  "description": "Sports trivia for serious fans – Hebrew & English. טריוויה לחולי ספורט.",
  "icons": [
   {
